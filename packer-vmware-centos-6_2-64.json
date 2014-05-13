@@ -1,0 +1,40 @@
+{
+    "builders": [
+        {
+            "boot_command": [
+                "<esc>",
+                "<wait>linux ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/anaconda-ks.cfg<enter>"
+            ],
+            "boot_wait": "5s",
+            "disk_size": 50000,
+            "guest_os_type": "RHEL6",
+            "headless": true,
+            "http_directory": "./http_directory",
+            "iso_md5": "20dac370a6e08ded2701e4104855bc6e",
+            "iso_url": "http://vault.centos.org/6.2/isos/x86_64/CentOS-6.2-x86_64-minimal.iso",
+            "skip_compaction": true,
+            "ssh_password": "vagrant",
+            "ssh_username": "root",
+            "ssh_wait_timeout": "20m",
+            "tools_upload_flavor": "linux",
+            "type": "vmware",
+            "vm_name": "packer-centos-6_2-64"
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "shell",
+            "script": "provisioners/install-vmware-guest-additions.sh"
+        },
+        {
+            "type": "shell",
+            "script": "provisioners/clean-empty-space.sh"
+        }
+    ],
+    "post-processors": [
+        {
+            "type": "vagrant",
+            "output": "centos-6_2-64_vmware.box"
+        }
+    ]
+}
